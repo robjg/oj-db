@@ -1,0 +1,14 @@
+<arooa:descriptor  xmlns:arooa="http://rgordon.co.uk/oddjob/arooa"
+        prefix="hikari" namespace="oddjob:hikari">
+	<components>
+		<arooa:bean-def element='data-source'
+		    className='org.oddjob.hikari.HikariDataSourceService'>
+			<annotations>
+				<arooa:annotation name="org.oddjob.framework.adapt.Start"
+								  method="run"/>
+				<arooa:annotation name="org.oddjob.framework.adapt.Stop"
+								  method="close"/>
+			</annotations>
+		</arooa:bean-def>
+	</components>
+</arooa:descriptor>

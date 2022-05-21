@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<oddjob>
+    <job>
+        <sequential>
+            <jobs>
+                <hikari:data-source id="hikari" url="jdbc:hsqldb:mem:test" user="sa" xmlns:hikari="oddjob:hikari"/>
+                <variables id="vars">
+                    <connection>
+                        <connection driver="org.hsqldb.jdbcDriver" password="" url="jdbc:hsqldb:mem:test" username="sa"/>
+                    </connection>
+                </variables>
+                <sql name="Create Tale">
+                    <connection>
+                        <value value="${hikari.dataSource.connection}"/>
+                    </connection>
+                    <input>
+                        <buffer><![CDATA[
+              DROP TABLE fruit IF EXISTS
+
+              CREATE TABLE fruit(
+              TYPE VARCHAR(20),
+              QUANTITY INTEGER)]]></buffer>
+                    </input>
+                </sql>
+                <sql name="Insert Row">
+                    <connection>
+                        <value value="${hikari.dataSource.connection}"/>
+                    </connection>
+                    <input>
+                        <buffer><![CDATA[INSERT INTO fruit (type, quantity)
+VALUES ('Apple', 10);]]></buffer>
+                    </input>
+                </sql>
+                <sql name="Select Row">
+                    <connection>
+                        <value value="${hikari.dataSource.connection}"/>
+                    </connection>
+                    <input>
+                        <buffer><![CDATA[SELECT * FROM fruit]]></buffer>
+                    </input>
+                    <results>
+                        <sql-results-sheet/>
+                    </results>
+                </sql>
+                <stop job="${hikari}"/>
+            </jobs>
+        </sequential>
+    </job>
+</oddjob>
