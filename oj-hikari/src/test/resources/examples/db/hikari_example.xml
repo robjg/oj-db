@@ -4,11 +4,6 @@
         <sequential>
             <jobs>
                 <hikari:data-source id="hikari" url="jdbc:hsqldb:mem:test" user="sa" xmlns:hikari="oddjob:hikari"/>
-                <variables id="vars">
-                    <connection>
-                        <connection driver="org.hsqldb.jdbcDriver" password="" url="jdbc:hsqldb:mem:test" username="sa"/>
-                    </connection>
-                </variables>
                 <sql name="Create Tale">
                     <connection>
                         <value value="${hikari.dataSource.connection}"/>

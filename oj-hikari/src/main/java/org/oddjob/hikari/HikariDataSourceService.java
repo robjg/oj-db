@@ -2,12 +2,19 @@ package org.oddjob.hikari;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.util.Optional;
 import java.util.Properties;
 
+/**
+ * A Service for use in Oddjob that provides a data source.
+ */
 public class HikariDataSourceService implements Runnable, AutoCloseable {
+
+    private static final Logger logger = LoggerFactory.getLogger(HikariDataSourceService.class);
 
     private String name;
 
@@ -27,7 +34,8 @@ public class HikariDataSourceService implements Runnable, AutoCloseable {
     public void run() {
 
         HikariConfig config = Optional.ofNullable(this.properties)
-                .map(HikariConfig::new).orElseGet(() -> new HikariConfig());
+                .map(HikariConfig::new)
+                .orElseGet(HikariConfig::new);
 
         Optional.ofNullable(this.url).ifPresent(config::setJdbcUrl);
         Optional.ofNullable(this.user).ifPresent(config::setUsername);
@@ -35,10 +43,11 @@ public class HikariDataSourceService implements Runnable, AutoCloseable {
 
         this.dataSource = new HikariDataSource(config);
 
+        logger.info("Created datasource from URL {{}} and User {{}}", config.getJdbcUrl(), config.getUsername());
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         dataSource.close();
         dataSource = null;
     }
